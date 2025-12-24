@@ -2,11 +2,12 @@
 
 namespace App\Services;
 
+use Exception;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\OrderItem;
 use Illuminate\Support\Facades\DB;
-use Exception;
+use Illuminate\Support\Facades\Cache;
 
 class OrderService
 {
@@ -66,6 +67,9 @@ class OrderService
             OrderItem::insert($orderItemsData);
             // Update order totals
             $order->update(['total_amount' => $totalAmount]);
+
+            // Clear cache
+            Cache::forget('products_list');
 
             return $order;
         });

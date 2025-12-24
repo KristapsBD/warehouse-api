@@ -124,7 +124,6 @@ The API is now running at **http://localhost:8080**
     "items": [
       {
         "product_id": 1,
-        "product_name": "MacBook Pro",
         "quantity": 1,
         "price_at_purchase": 1999.99,
         "total": 1999.99
