@@ -7,7 +7,7 @@
 ### Installation
 1. **Clone the repository:**
    ```bash
-   git clone <your-repo-url>
+   git clone git@github.com:KristapsBD/warehouse-api.git
    cd warehouse-api
    ```
 
@@ -82,14 +82,14 @@ The API is now running at **http://localhost:8080**
       "name": "MacBook Pro",
       "description": "M3 Chip, 16GB RAM",
       "price": 1999.99,
-      "stock_available": 10
+      "quantity": 10
     },
     {
       "id": 2,
       "name": "Logitech Mouse",
       "description": "Wireless",
       "price": 49.50,
-      "stock_available": 50
+      "quantity": 50
     }
   ]
 }
@@ -118,7 +118,7 @@ The API is now running at **http://localhost:8080**
   "message": "Order created successfully",
   "order": {
     "id": 55,
-    "reference_number": "ORD-50017",
+    "order_number": "ORD-50017",
     "total_paid": 2247.49,
     "date": "2025-12-24T14:30:00+00:00",
     "items": [
@@ -144,8 +144,8 @@ The API is now running at **http://localhost:8080**
 {
   "data": {
     "id": 55,
-    "reference_number": "ORD-50017",
-    "total_paid": 2247.49,
+    "order_number": "ORD-50017",
+    "total": 2247.49,
     "date": "2025-12-24T14:30:00+00:00",
     "items": [...]
   }
