@@ -12,7 +12,7 @@ migrate:
 	./vendor/bin/sail artisan migrate
 
 migrate-fresh:
-	./vendor/bin/sail artisan migrate:fresh
+	./vendor/bin/sail artisan migrate:fresh --seed
 
 seed:
 	./vendor/bin/sail artisan db:seed
@@ -20,8 +20,16 @@ seed:
 shell:
 	./vendor/bin/sail shell
 
+db:
+	./vendor/bin/sail mysql
+
 install:
 	./vendor/bin/sail composer install
 
 test:
 	./vendor/bin/sail test
+
+logs:
+	./vendor/bin/sail logs -f
+
+
