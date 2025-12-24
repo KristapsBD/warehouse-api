@@ -9,14 +9,16 @@ use App\Http\Controllers\ProductController;
 Route::get('/products', [ProductController::class, 'index']);
 
 // Login
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:login');
 
-Route::middleware('auth:sanctum')->group(function () {
-    // Create new order
-    Route::post('/orders', [OrderController::class, 'store']);
+Route::middleware('auth:sanctum','throttle:api')->group(function () {
 
-    // Get order by id
-    Route::get('/orders/{order}', [OrderController::class, 'show']);
+    Route::controller(OrderController::class)->group(function () {
+        // Create new order
+        Route::post('/orders', 'store');
+        // Get order by id
+        Route::get('/orders/{order}', 'show');
+    });
 
     // Logout
     Route::post('/logout', [AuthController::class, 'logout']);
