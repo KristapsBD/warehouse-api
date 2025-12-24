@@ -22,14 +22,17 @@ class OrderService
          // Create DB transaction
         return DB::transaction(function () use ($items) {
 
-            $totalAmount = 0;
-            $orderItemsData = [];
-
             // Create order header
             $order = Order::create([
-                'order_number' => 'ORD-' . strtoupper(uniqid()),
                 'total_amount' => 0,
             ]);
+
+            $orderNumber = 'ORD-' . ($order->id * 3) + 10000;
+            $order->order_number = $orderNumber;
+            $order->save();
+
+            $totalAmount = 0;
+            $orderItemsData = [];
 
             // Process each product
             foreach ($items as $item) {
