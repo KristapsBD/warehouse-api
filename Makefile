@@ -14,9 +14,6 @@ migrate:
 migrate-fresh:
 	./vendor/bin/sail artisan migrate:fresh --seed
 
-seed:
-	./vendor/bin/sail artisan db:seed
-
 shell:
 	./vendor/bin/sail shell
 

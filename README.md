@@ -1,59 +1,155 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Warehouse Management API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### Prerequisites
+* Docker & Docker Compose
+* Make (Optional for shortcuts)
 
-## About Laravel
+### Installation
+1. **Clone the repository:**
+   ```bash
+   git clone <your-repo-url>
+   cd warehouse-api
+   ```
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+2. **Setup Environment:**
+   ```bash
+   cp .env.example .env
+   ```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+3. **Build & Run:**
+   ```bash
+   make up
+   ```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+4. **Initialize Database:**
+   ```bash
+   make migrate-fresh
+   ```
 
-## Learning Laravel
+The API is now running at **http://localhost:8080**
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Useful commands
 
-## Laravel Sponsors
+| Command | Description |
+| :--- | :--- |
+| `make test` | Run full PHPUnit tests |
+| `make shell` | Enter PHP container terminal |
+| `make db` | Enter DB container terminal |
+| `make migrate-fresh` | Rerun all migrations and seed |
+| `make logs` | View server logs |
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## API Documentation
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 1. Authentication
 
-## Contributing
+#### **Login**
+* **Endpoint:** `POST /api/login`
+* **Public:** Yes
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**Request Body:**
+```json
+{
+  "email": "test@example.com",
+  "password": "password"
+}
+```
 
-## Code of Conduct
+**Response (200 OK):**
+```json
+{
+  "token": "1|xurXVzYtNF8fdkQU9KVG8PqVz...",
+  "user": { ... }
+}
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 2. Products
 
-## Security Vulnerabilities
+#### **List All Products**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+* **Endpoint:** `GET /api/products`
+* **Public:** Yes
 
-## License
+**Response (200 OK):**
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "MacBook Pro",
+      "description": "M3 Chip, 16GB RAM",
+      "price": 1999.99,
+      "stock_available": 10
+    },
+    {
+      "id": 2,
+      "name": "Logitech Mouse",
+      "description": "Wireless",
+      "price": 49.50,
+      "stock_available": 50
+    }
+  ]
+}
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 3. Orders
+
+#### **Create Order**
+
+* **Endpoint:** `POST /api/orders`
+* **Headers:** `Authorization: Bearer <your_token>`
+
+**Request Body:**
+```json
+{
+  "products": [
+    { "id": 1, "quantity": 1 },
+    { "id": 2, "quantity": 5 }
+  ]
+}
+```
+
+**Response (201 Created):**
+```json
+{
+  "message": "Order created successfully",
+  "order": {
+    "id": 55,
+    "reference_number": "ORD-50017",
+    "total_paid": 2247.49,
+    "date": "2025-12-24T14:30:00+00:00",
+    "items": [
+      {
+        "product_id": 1,
+        "product_name": "MacBook Pro",
+        "quantity": 1,
+        "price_at_purchase": 1999.99,
+        "total": 1999.99
+      }
+    ]
+  }
+}
+```
+
+#### **Get Order Info**
+
+* **Endpoint:** `GET /api/orders/{id}`
+* **Headers:** `Authorization: Bearer <your_token>`
+
+**Response (200 OK):**
+```json
+{
+  "data": {
+    "id": 55,
+    "reference_number": "ORD-50017",
+    "total_paid": 2247.49,
+    "date": "2025-12-24T14:30:00+00:00",
+    "items": [...]
+  }
+}
+```
+
+---
