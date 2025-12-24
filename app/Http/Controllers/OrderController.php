@@ -6,9 +6,9 @@ use Exception;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\OrderItem;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreOrderRequest;
 
 class OrderController extends Controller
 {
@@ -23,14 +23,10 @@ class OrderController extends Controller
     /**
      * Create new order.
      */
-    public function store(Request $request): JsonResponse
+    public function store(StoreOrderRequest $request): JsonResponse
     {
         // Input validation
-        $validated = $request->validate([
-            'products' => 'required|array',
-            'products.*.id' => 'required|exists:products,id',
-            'products.*.quantity' => 'required|integer|min:1',
-        ]);
+        $validated = $request->validated();
 
         try {
             // Create DB transaction

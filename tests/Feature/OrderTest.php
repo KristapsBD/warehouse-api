@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\User;
+use Laravel\Sanctum\Sanctum;
 
 class OrderTest extends TestCase
 {
@@ -13,6 +15,10 @@ class OrderTest extends TestCase
 
     public function test_can_create_order_successfully()
     {
+        // Create user and login
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
         // Create product
         $product = Product::factory()->create([
             'price' => 100.00,
@@ -48,6 +54,10 @@ class OrderTest extends TestCase
 
     public function test_cannot_purchase_more_than_available_stock()
     {
+        // Create user and login
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
         // Create product
         $product = Product::factory()->create(['quantity' => 5]);
 
@@ -73,6 +83,10 @@ class OrderTest extends TestCase
 
     public function test_validation_fails_if_product_does_not_exist()
     {
+        // Create user and login
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
         // Buy product that does not exist
         $payload = [
             'products' => [
