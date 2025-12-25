@@ -24,7 +24,8 @@ services:
         networks:
             - sail
         depends_on:
-            - mysql
+                mysql:
+                    condition: service_healthy
     mysql:
         container_name: warehouse_db
         image: 'mysql:8.4'
