@@ -217,14 +217,17 @@ The API is now running at **http://localhost:8080**
 {
     "data": {
         "id": 55,
-        "total_price": 2247.49,
-        "created_at": "2025-12-24T14:30:00+00:00",
+        "order_number": "ORD-50017",
+        "total": 523.77,
+        "date": "2025-12-24T14:30:00+00:00",
         "items": [
             {
                 "product_id": 1,
-                "quantity": 1,
-                "price": 1999.99
-            }
+                "quantity": 2,
+                "price": 1999.99,
+                "total": 3999.98
+            },
+            ...
         ]
     }
 }
