@@ -19,11 +19,13 @@ class ProductController extends Controller
     public function index(): AnonymousResourceCollection
     {
         // Add caching
-        $cacheKey = 'products_list';
+        $page = request()->get('page', 1);
+        $version = Cache::rememberForever('products_global_timestamp', fn() => now()->timestamp);
+        $cacheKey = "products_list_v{$version}_page_{$page}";
 
         $products = Cache::remember($cacheKey, 3600, function () {
             // If cache empty, fetch from DB
-            return Product::all();
+            return Product::paginate(100);
         });
 
         return ProductResource::collection($products);

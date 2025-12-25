@@ -71,9 +71,6 @@ class OrderService
             // Update order totals
             $order->update(['total_amount' => $totalAmount]);
 
-            // Clear cache
-            Cache::forget('products_list');
-
             return $order;
         });
     }
