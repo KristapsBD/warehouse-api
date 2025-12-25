@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Models\Product;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Cache;
-use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
+use App\Models\User;
+use App\Models\Product;
+use Laravel\Sanctum\Sanctum;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class OrderTest extends TestCase
 {
@@ -127,14 +127,15 @@ class OrderTest extends TestCase
         Sanctum::actingAs(User::factory()->create());
         $product = Product::factory()->create(['quantity' => 10]);
 
-        Cache::spy();
+        // Set initial timestamp
+        Cache::forever('products_global_timestamp', 1000);
 
         $this->postJson('/api/orders', [
             'products' => [['id' => $product->id, 'quantity' => 1]],
         ])->assertCreated();
 
-        // Check if cache was cleared
-        Cache::shouldHaveReceived('forget')->once()->with('products_list');
+        // Check if timestamp was updated
+        $this->assertNotEquals(1000, Cache::get('products_global_timestamp'));
     }
 
     public function test_validation_fails_if_duplicate_products_are_sent()

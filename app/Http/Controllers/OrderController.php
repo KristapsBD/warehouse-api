@@ -21,12 +21,11 @@ class OrderController extends Controller
      *  Show order by id
      *
      * @param  Order  $order
-     * @return JsonResponse
+     * @return OrderResource
      */
-    public function show(Order $order): JsonResponse
+    public function show(Order $order): OrderResource
     {
-        return response()->json($order->load('items'));
-    }
+        return new OrderResource($order->load('items'));    }
 
     /**
      * Create new order

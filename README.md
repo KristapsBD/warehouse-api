@@ -215,22 +215,18 @@ The API is now running at **http://localhost:8080**
 **Response (200 OK):**
 ```json
 {
-  "id": 55,
-  "order_number": "ORD-50165",
-  "total_amount": 2247.49,
-  "created_at": "2025-12-25T14:30:00.000000Z",
-  "updated_at": "2025-12-25T14:30:00.000000Z",
-  "items": [
-    {
-      "id": 1,
-      "order_id": 55,
-      "product_id": 1,
-      "quantity": 1,
-      "price": 1999.99,
-      "created_at": "2025-12-25T14:30:00.000000Z",
-      "updated_at": "2025-12-25T14:30:00.000000Z"
+    "data": {
+        "id": 55,
+        "total_price": 2247.49,
+        "created_at": "2025-12-24T14:30:00+00:00",
+        "items": [
+            {
+                "product_id": 1,
+                "quantity": 1,
+                "price": 1999.99
+            }
+        ]
     }
-  ]
 }
 ```
 
