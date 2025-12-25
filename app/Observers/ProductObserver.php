@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Observers;
 
 use App\Models\Product;
@@ -9,6 +11,8 @@ class ProductObserver
 {
     /**
      * Handle events after product is modified
+     *
+     * @return void
      */
     private function clearProductCache(): void
     {
@@ -17,7 +21,10 @@ class ProductObserver
     }
 
     /**
-     * Handle the Product "created" event.
+     * Handle the Product "created" event
+     *
+     * @param  Product  $product
+     * @return void
      */
     public function created(Product $product): void
     {
@@ -25,7 +32,10 @@ class ProductObserver
     }
 
     /**
-     * Handle the Product "updated" event.
+     * Handle the Product "updated" event
+     *
+     * @param  Product  $product
+     * @return void
      */
     public function updated(Product $product): void
     {
@@ -33,7 +43,10 @@ class ProductObserver
     }
 
     /**
-     * Handle the Product "deleted" event.
+     * Handle the Product "deleted" event
+     *
+     * @param  Product  $product
+     * @return void
      */
     public function deleted(Product $product): void
     {

@@ -31,7 +31,7 @@ class OrderService
                 'total_amount' => 0,
             ]);
 
-            $orderNumber = 'ORD-'.($order->id * 3) + 10000;
+            $orderNumber = 'ORD-'.(($order->id * 3) + 10000);
             $order->order_number = $orderNumber;
             $order->save();
 
