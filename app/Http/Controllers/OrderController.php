@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreOrderRequest;
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
-use InvalidArgumentException;
 use App\Services\OrderService;
 use Illuminate\Http\JsonResponse;
-use App\Http\Resources\OrderResource;
-use App\Http\Requests\StoreOrderRequest;
+use InvalidArgumentException;
 
 class OrderController extends Controller
 {
@@ -20,7 +20,7 @@ class OrderController extends Controller
     /**
      *  Show order by id
      *
-     * @param Order $order
+     * @param  Order  $order
      * @return JsonResponse
      */
     public function show(Order $order): JsonResponse
@@ -31,8 +31,9 @@ class OrderController extends Controller
     /**
      * Create new order
      *
-     * @param StoreOrderRequest $request
+     * @param  StoreOrderRequest  $request
      * @return JsonResponse
+     *
      * @throws InvalidArgumentException
      */
     public function store(StoreOrderRequest $request): JsonResponse
@@ -45,13 +46,13 @@ class OrderController extends Controller
 
             return response()->json([
                 'message' => 'Order created successfully',
-                'order' => new OrderResource($order->load('items'))
+                'order' => new OrderResource($order->load('items')),
             ], 201);
 
         } catch (InvalidArgumentException $e) {
             return response()->json([
                 'error' => 'Order failed',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 400);
         }
     }

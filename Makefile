@@ -29,4 +29,6 @@ test:
 logs:
 	./vendor/bin/sail logs -f
 
+lint:
+	./vendor/bin/sail bin pint
 

@@ -12,7 +12,7 @@ class OrderItemResource extends JsonResource
     /**
      * Transform the order item resource into array
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array

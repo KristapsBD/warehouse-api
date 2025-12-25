@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Product;
-use Laravel\Sanctum\Sanctum;
-use Illuminate\Support\Facades\Cache;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
+use Laravel\Sanctum\Sanctum;
+use Tests\TestCase;
 
 class OrderTest extends TestCase
 {
@@ -22,33 +22,33 @@ class OrderTest extends TestCase
         // Create product
         $product = Product::factory()->create([
             'price' => 100.00,
-            'quantity' => 10
+            'quantity' => 10,
         ]);
 
         // Buy products
         $payload = [
             'products' => [
-                ['id' => $product->id, 'quantity' => 2]
-            ]
+                ['id' => $product->id, 'quantity' => 2],
+            ],
         ];
 
         $response = $this->postJson('/api/orders', $payload);
 
         // Check API response
         $response->assertStatus(201)
-                 ->assertJsonPath('message', 'Order created successfully');
+            ->assertJsonPath('message', 'Order created successfully');
 
         // Check database stock
         $this->assertDatabaseHas('products', [
             'id' => $product->id,
-            'quantity' => 8
+            'quantity' => 8,
         ]);
 
         // Check order item
         $this->assertDatabaseHas('order_items', [
             'product_id' => $product->id,
             'quantity' => 2,
-            'price' => 100.00
+            'price' => 100.00,
         ]);
     }
 
@@ -61,18 +61,18 @@ class OrderTest extends TestCase
         // Buy products more than available stock
         $payload = [
             'products' => [
-                ['id' => $product->id, 'quantity' => 10]
-            ]
+                ['id' => $product->id, 'quantity' => 10],
+            ],
         ];
 
         $response = $this->postJson('/api/orders', $payload);
 
         $response->assertStatus(400)
-                 ->assertJsonFragment(['error' => 'Order failed']);
+            ->assertJsonFragment(['error' => 'Order failed']);
 
         $this->assertDatabaseHas('products', [
             'id' => $product->id,
-            'quantity' => 5
+            'quantity' => 5,
         ]);
     }
 
@@ -83,14 +83,14 @@ class OrderTest extends TestCase
         // Buy product that does not exist
         $payload = [
             'products' => [
-                ['id' => 999, 'quantity' => 1]
-            ]
+                ['id' => 999, 'quantity' => 1],
+            ],
         ];
 
         $response = $this->postJson('/api/orders', $payload);
 
         $response->assertStatus(422)
-                 ->assertJsonValidationErrors(['products.0.id']);
+            ->assertJsonValidationErrors(['products.0.id']);
     }
 
     public function test_if_one_item_fails_no_stock_is_deducted()
@@ -106,7 +106,7 @@ class OrderTest extends TestCase
             'products' => [
                 ['id' => $productA->id, 'quantity' => 1],
                 ['id' => $productB->id, 'quantity' => 5],
-            ]
+            ],
         ];
 
         $this->postJson('/api/orders', $payload);
@@ -114,7 +114,7 @@ class OrderTest extends TestCase
         // No change to A
         $this->assertDatabaseHas('products', [
             'id' => $productA->id,
-            'quantity' => 10
+            'quantity' => 10,
         ]);
 
         // Make sure no order created
@@ -130,7 +130,7 @@ class OrderTest extends TestCase
         Cache::spy();
 
         $this->postJson('/api/orders', [
-            'products' => [['id' => $product->id, 'quantity' => 1]]
+            'products' => [['id' => $product->id, 'quantity' => 1]],
         ])->assertCreated();
 
         // Check if cache was cleared
@@ -146,13 +146,13 @@ class OrderTest extends TestCase
             'products' => [
                 ['id' => $product->id, 'quantity' => 1],
                 ['id' => $product->id, 'quantity' => 2], // Duplicate ID
-            ]
+            ],
         ];
 
         $response = $this->postJson('/api/orders', $payload);
 
         $response->assertStatus(422)
-                ->assertJsonValidationErrors(['products.0.id']);
+            ->assertJsonValidationErrors(['products.0.id']);
     }
 
     public function test_guest_cannot_create_order()
@@ -160,7 +160,7 @@ class OrderTest extends TestCase
         $product = Product::factory()->create();
 
         $response = $this->postJson('/api/orders', [
-            'products' => [['id' => $product->id, 'quantity' => 1]]
+            'products' => [['id' => $product->id, 'quantity' => 1]],
         ]);
 
         // Unauthorized
@@ -174,13 +174,13 @@ class OrderTest extends TestCase
 
         $payload = [
             'products' => [
-                ['id' => $product->id, 'quantity' => -5]
-            ]
+                ['id' => $product->id, 'quantity' => -5],
+            ],
         ];
 
         $response = $this->postJson('/api/orders', $payload);
 
         $response->assertStatus(422)
-                ->assertJsonValidationErrors(['products.0.quantity']);
+            ->assertJsonValidationErrors(['products.0.quantity']);
     }
 }

@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Foundation\Application;
 use App\Http\Middleware\ForceJsonResponse;
+use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -29,7 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('api/*')) {
                 return response()->json([
                     'error' => 'Resource not found',
-                    'message' => 'The requested entry does not exist.'
+                    'message' => 'The requested entry does not exist.',
                 ], 404);
             }
         });
@@ -38,7 +38,7 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('api/*')) {
                 return response()->json([
                     'error' => 'Method not allowed. Please check API docs.',
-                    'allowed_methods' => $e->getHeaders()['Allow'] ?? null
+                    'allowed_methods' => $e->getHeaders()['Allow'] ?? null,
                 ], 405);
             }
         });

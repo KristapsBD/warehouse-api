@@ -5,24 +5,25 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Order;
-use App\Models\Product;
 use App\Models\OrderItem;
-use InvalidArgumentException;
-use Illuminate\Support\Facades\DB;
+use App\Models\Product;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use InvalidArgumentException;
 
 class OrderService
 {
     /**
      * Create new order
      *
-     * @param array $items
+     * @param  array  $items
      * @return Order
+     *
      * @throws InvalidArgumentException
      */
     public function createOrder(array $items): Order
     {
-         // Create DB transaction
+        // Create DB transaction
         return DB::transaction(function () use ($items) {
 
             // Create order header
@@ -30,7 +31,7 @@ class OrderService
                 'total_amount' => 0,
             ]);
 
-            $orderNumber = 'ORD-' . ($order->id * 3) + 10000;
+            $orderNumber = 'ORD-'.($order->id * 3) + 10000;
             $order->order_number = $orderNumber;
             $order->save();
 

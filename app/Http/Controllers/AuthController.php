@@ -13,14 +13,14 @@ class AuthController extends Controller
     /**
      * Authenticate user and generate API token
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return JsonResponse
      */
     public function login(Request $request): JsonResponse
     {
         $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
         ]);
 
         if (Auth::attempt($credentials)) {
@@ -30,7 +30,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'token' => $token,
-                'user' => $user
+                'user' => $user,
             ]);
         }
 
@@ -40,13 +40,14 @@ class AuthController extends Controller
     /**
      * Revoke current access token and logout
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return JsonResponse
      */
     public function logout(Request $request): JsonResponse
     {
         // Revoke token
         $request->user()->currentAccessToken()->delete();
+
         return response()->json(['message' => 'Logged out']);
     }
 }
