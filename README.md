@@ -18,7 +18,7 @@
 
 3. **Build & Run:**
    ```bash
-   make up
+   make setup
    ```
 
 4. **Initialize Database:**

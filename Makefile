@@ -32,3 +32,12 @@ logs:
 lint:
 	./vendor/bin/sail bin pint
 
+setup:
+	mkdir -p vendor
+	docker run --rm \
+		-u "$(shell id -u):$(shell id -g)" \
+		-v "$(shell pwd):/var/www/html" \
+		-w /var/www/html \
+		laravelsail/php84-composer:latest \
+		composer install --ignore-platform-reqs
+	$(MAKE) up
