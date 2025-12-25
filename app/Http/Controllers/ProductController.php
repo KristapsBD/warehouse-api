@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Product;
@@ -10,7 +12,9 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 class ProductController extends Controller
 {
     /**
-     * Show all products.
+     * Show all products
+     *
+     * @return AnonymousResourceCollection
      */
     public function index(): AnonymousResourceCollection
     {

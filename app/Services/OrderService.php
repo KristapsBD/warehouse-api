@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
-use Exception;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\OrderItem;
+use InvalidArgumentException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 
@@ -16,7 +18,7 @@ class OrderService
      *
      * @param array $items
      * @return Order
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function createOrder(array $items): Order
     {
@@ -42,7 +44,7 @@ class OrderService
 
                 // Validate stock
                 if ($product->quantity < $item['quantity']) {
-                    throw new Exception("Product '{$product->name}' does not have enough stock (Requested: {$item['quantity']}, Available: {$product->quantity})");
+                    throw new InvalidArgumentException("Product '{$product->name}' does not have enough stock (Requested: {$item['quantity']}, Available: {$product->quantity})");
                 }
 
                 // Stock update
