@@ -13,7 +13,7 @@ class ProductObserver
     private function clearProductCache(): void
     {
         // Invalidate all product cache
-        Cache::put('products_global_timestamp', now()->timestamp);
+        Cache::forever('products_global_timestamp', now()->timestamp);
     }
 
     /**
