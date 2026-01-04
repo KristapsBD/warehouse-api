@@ -30,6 +30,20 @@ The API is now running at **http://localhost:8080**
 
 ---
 
+## API Documentation (Swagger UI)
+
+Interactive API documentation is available via **Swagger UI**:
+
+📖 **http://localhost:8080/api/documentation**
+
+To regenerate the OpenAPI documentation manually:
+```bash
+make shell
+php artisan l5-swagger:generate
+```
+
+---
+
 ## Useful commands
 
 | Command | Description |
@@ -42,7 +56,9 @@ The API is now running at **http://localhost:8080**
 
 ---
 
-## API Documentation
+## API Reference
+
+> 💡 **Tip:** Use [Swagger UI](#api-documentation-swagger-ui).
 
 ### 1. Authentication
 
