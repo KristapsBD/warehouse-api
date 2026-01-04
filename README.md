@@ -58,7 +58,7 @@ php artisan l5-swagger:generate
 
 ## API Reference
 
-> 💡 **Tip:** Use [Swagger UI](#api-documentation-swagger-ui).
+> **Tip:** Use [Swagger UI](#api-documentation-swagger-ui).
 
 ### 1. Authentication
 
